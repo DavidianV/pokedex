@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getPokemonTypes } from '../store/pokemon';
+import { getPokemonTypes, newPokemon } from '../store/pokemon';
 
 const CreatePokemonForm = ({ hideForm }) => {
   const pokeTypes = useSelector(state => state.pokemon.types);
@@ -38,20 +38,24 @@ const CreatePokemonForm = ({ hideForm }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const payload = {
-    //   number,
-    //   attack,
-    //   defense,
-    //   imageUrl,
-    //   name,
-    //   type,
-    //   move1,
-    //   move2,
-    //   moves: [move1, move2]
-    // };
+    const payload = {
+      number,
+      attack,
+      defense,
+      imageUrl,
+      name,
+      type,
+      move1,
+      move2,
+      moves: [move1, move2]
+    };
 
-    let createdPokemon;
-    if (createdPokemon) {
+    
+
+    let createdPokemon = await dispatch(newPokemon(payload))
+
+    console.log('###',createdPokemon)
+    if ( createdPokemon) {
       navigate(`/pokemon/${createdPokemon.id}`);
       hideForm();
     }

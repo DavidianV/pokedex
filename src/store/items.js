@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+
 export const LOAD_ITEMS = "items/LOAD_ITEMS";
 export const UPDATE_ITEM = "items/UPDATE_ITEM";
 export const REMOVE_ITEM = "items/REMOVE_ITEM";
@@ -24,6 +26,32 @@ const remove = (itemId, pokemonId) => ({
   itemId,
   pokemonId
 });
+
+export const getItems = (pokemonId) => async dispatch => {
+  const response = await fetch(`/api/pokemon/${pokemonId}/items`)
+
+  if(response.ok) {
+    const items = await response.json();
+    dispatch(load(items, pokemonId));
+    return items
+  }
+}
+
+export const updateItem = (item) => async dispatch => {
+  console.log('###', item.id)
+  const response = await fetch(`/api/items/${item.id}}`, {
+    method: 'PUT',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(item)
+})
+
+if (response.ok) {
+  const updatedItem = await response.json()
+  dispatch(update(updatedItem))
+  return updatedItem
+  }
+
+}
 
 const initialState = {};
 

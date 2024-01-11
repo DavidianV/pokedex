@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => ({
   ],
   server: {
     proxy: {
-      "/api": "http://localhost:5000",
-      "/images": "http://localhost:5000"
+      "/api": "http://localhost:5055",
+      "/images": "http://localhost:5055"
     },
     // To automatically open the app in the browser whenever the server starts,
     // uncomment the following lines:

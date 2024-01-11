@@ -1,3 +1,4 @@
+import { json } from 'react-router-dom';
 import { LOAD_ITEMS, REMOVE_ITEM, ADD_ITEM } from './items';
 
 const LOAD = 'pokemon/LOAD';
@@ -28,6 +29,15 @@ export const getPokemon = () => async dispatch => {
   }
 };
 
+export const getOnePokemon = (pokemonId) => async dispatch => {
+  const res = await fetch(`/api/pokemon/${pokemonId}`)
+
+  if (res.ok) {
+    const pokemon = await res.json();
+    dispatch(addOnePokemon(pokemon))
+  }
+};
+
 export const getPokemonTypes = () => async dispatch => {
   const response = await fetch(`/api/pokemon/types`);
 
@@ -36,6 +46,37 @@ export const getPokemonTypes = () => async dispatch => {
     dispatch(loadTypes(types));
   }
 };
+
+export const newPokemon = (payload) => async dispatch => {
+  const response = await fetch("/api/pokemon", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+})
+
+if (response.ok) {
+  const pokemon = await response.json()
+  dispatch(addOnePokemon(pokemon))
+  return pokemon
+  }
+};  
+
+export const updatePokemon = (pokemon) => async dispatch => {
+  const response = await fetch(`/api/pokemon/${pokemon.id}`, {
+    method: 'PUT',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(pokemon)
+})
+
+if (response.ok) {
+  const updatedPokemon = await response.json()
+  dispatch(addOnePokemon(updatedPokemon))
+  return updatedPokemon
+  }
+
+}
+
+
 
 const initialState = {
   list: [],
